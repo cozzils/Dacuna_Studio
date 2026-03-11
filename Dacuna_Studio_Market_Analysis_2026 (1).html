@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Dacuna Studio — Analisi di Mercato 2026: servizi di marketing digitale, web design, SEO, brand identity in Italia e Lombardia.">
+<title>Dacuna Studio — Analisi di Mercato 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════
+   DACUNA STUDIO — DESIGN SYSTEM
+═══════════════════════════════════════════ */
+:root {
+  --orange:  #FF4D00;
+  --orange2: #FF7A40;
+  --orange3: #FF9B6B;
+  --bg:      #0D0D0D;
+  --s1:      #161616;
+  --s2:      #1F1F1F;
+  --s3:      #252525;
+  --b1:      #2A2A2A;
+  --b2:      #333333;
+  --tx:      #F0F0F0;
+  --tx2:     #B8B8B8;   /* ↑ was #CCCCCC — more contrast vs --tx */
+  --mu:      #999999;   /* ↑ was #888 — WCAG AA on #0D0D0D */
+  --mu2:     #555555;
+  --fd:      'Bebas Neue', sans-serif;
+  --fb:      'Plus Jakarta Sans', sans-serif;
+  --fm:      'JetBrains Mono', monospace;
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+html { scroll-behavior:smooth }
+
+/* ↑ font-size 14→15px, line-height 1.6→1.72 */
+body { background:var(--bg); color:var(--tx); font-family:var(--fb); font-size:15px; line-height:1.72; overflow-x:hidden }
+
+::-webkit-scrollbar { width:3px }
+::-webkit-scrollbar-track { background:var(--bg) }
+::-webkit-scrollbar-thumb { background:var(--orange); border-radius:2px }
+
+/* ─── HERO ─── */
+.hero {
+  position:relative; min-height:100vh;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  padding:120px 72px 80px;  /* ↑ padding-top:120px added */
+  overflow:hidden;
+}
+.hero-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 70% 50% at 65% -5%, rgba(255,77,0,.16) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 35% at 5% 95%, rgba(255,77,0,.07) 0%, transparent 60%),
+    var(--bg);
+}
+.hero-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(255,77,0,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,77,0,.04) 1px, transparent 1px);
+  background-size:72px 72px;
+  mask-image:radial-gradient(ellipse 85% 85% at 50% 50%, black 0%, transparent 75%);
+}
+.eyebrow {
+  position:relative; font-family:var(--fm); font-size:10px; letter-spacing:.28em;
+  text-transform:uppercase; color:var(--orange); margin-bottom:22px;
+  opacity:0; animation:fu .7s .1s forwards;
+}
+.hero h1 {
+  position:relative; font-family:var(--fd);
+  font-size:clamp(72px,11vw,156px); line-height:.88; letter-spacing:.01em;
+  color:var(--tx); opacity:0; animation:fu .8s .25s forwards;
+}
+.hero h1 .ac { color:var(--orange) }
+.hero h1 .ol { -webkit-text-stroke:1.5px var(--tx2); color:transparent }
+
+/* ↑ hero paragraph color → --tx2 for legibility */
+.hero p {
+  position:relative; margin-top:28px; font-size:15px; color:var(--tx2);
+  max-width:520px; line-height:1.75; opacity:0; animation:fu .8s .4s forwards;
+}
+
+.kpis {
+  position:relative; display:flex; gap:0; margin-top:52px;
+  border-top:1px solid var(--b2); flex-wrap:wrap;
+  opacity:0; animation:fu .9s .55s forwards;
+}
+.kpi { padding:26px 36px 26px 0; margin-right:36px; border-right:1px solid var(--b1) }
+.kpi:last-child { border-right:none; margin-right:0 }
+
+/* ↑ kv font-size 46→52px for hero impact */
+.kv { font-family:var(--fd); font-size:52px; line-height:1; color:var(--tx); letter-spacing:.02em }
+.kv .u { font-size:26px; color:var(--orange) }
+
+/* ↑ kl font-size 9→10px */
+.kl {
+  font-family:var(--fm); font-size:10px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--mu); margin-top:6px;
+  display:flex; align-items:center; gap:6px;
+}
+.kl svg { flex-shrink:0 }
+
+/* ─── NAV ─── */
+nav {
+  position:sticky; top:0; z-index:200;
+  background:rgba(13,13,13,.93); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--b1);
+  display:flex; align-items:center; padding:0 72px;
+  overflow-x:auto;
+}
+
+/* nav fade-right indicator on mobile */
+nav::after {
+  content:'';
+  position:sticky; right:0; top:0; bottom:0;
+  width:40px; flex-shrink:0;
+  background:linear-gradient(to right, transparent, rgba(13,13,13,.95));
+  pointer-events:none;
+}
+
+/* ↑ brand separator border-right */
+.nb {
+  font-family:var(--fd); font-size:20px; letter-spacing:.08em; color:var(--tx);
+  margin-right:0; padding:16px 28px 16px 0; flex-shrink:0;
+  border-right:1px solid var(--b2); margin-right:8px;
+}
+.nb span { color:var(--orange) }
+
+nav a {
+  font-family:var(--fm); font-size:9px; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--mu); text-decoration:none; padding:17px 14px; white-space:nowrap;
+  border-bottom:2px solid transparent; transition:color .2s, border-color .2s;
+}
+nav a:hover, nav a.active { color:var(--orange); border-bottom-color:var(--orange) }
+
+/* ─── LAYOUT ─── */
+.wrap { max-width:1440px; margin:0 auto; padding:0 72px }
+section { padding:88px 0 72px }
+.div { height:1px; background:var(--b1) }
+
+/* ─── SECTION HEADER ─── */
+.sh { display:grid; grid-template-columns:auto 1fr; gap:0 28px; align-items:start; margin-bottom:52px }
+
+/* ↑ sn color #252525→#2E2E2E + opacity:0.6 */
+.sn {
+  font-family:var(--fd); font-size:88px; line-height:.85;
+  color:#2E2E2E; opacity:.6; user-select:none; letter-spacing:-.02em;
+}
+
+/* ↑ badge border rgba(.3)→rgba(.5) */
+.badge {
+  display:inline-block; font-family:var(--fm); font-size:9px; letter-spacing:.25em;
+  text-transform:uppercase; color:var(--orange);
+  border:1px solid rgba(255,77,0,.5); padding:4px 12px; margin-bottom:11px;
+}
+.st { font-family:var(--fd); font-size:clamp(34px,4.2vw,58px); line-height:.95; color:var(--tx); letter-spacing:.02em }
+.sd { margin-top:12px; color:var(--mu); font-size:13px; max-width:560px; line-height:1.72 }
+
+/* ─── GRID ─── */
+.g { display:grid; grid-template-columns:repeat(12,1fr); gap:18px }
+.c3{grid-column:span 3} .c4{grid-column:span 4} .c5{grid-column:span 5}
+.c6{grid-column:span 6} .c7{grid-column:span 7} .c8{grid-column:span 8} .c12{grid-column:span 12}
+
+/* ─── CARD ─── */
+/* ↑ card border → var(--b2) #333 for better definition */
+.card {
+  background:var(--s1); border:1px solid var(--b2); padding:26px 26px 22px;
+  position:relative; transition:border-color .25s;
+}
+.card:hover { border-color:#444 }
+
+/* ↑ card top line 2→3px */
+.card::before {
+  content:''; position:absolute; top:0; left:0; right:0;
+  height:3px; background:linear-gradient(90deg, var(--orange), var(--orange2));
+  opacity:0; transition:opacity .25s;
+}
+.card:hover::before { opacity:1 }
+
+/* ↑ cl font-size 9→10px */
+.cl { font-family:var(--fm); font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--mu2); margin-bottom:5px }
+
+/* ↑ ct font-size 12→13px */
+.ct { font-size:13px; font-weight:600; color:var(--tx2); margin-bottom:24px; line-height:1.45 }
+
+/* Canvas wrappers — fixed heights */
+.cb { position:relative; width:100% }
+.h200{height:200px} .h240{height:240px} .h260{height:260px} .h280{height:280px}
+.h300{height:300px} .h320{height:320px} .h340{height:340px} .h360{height:360px} .h400{height:400px}
+
+/* ─── DATA TABLE ─── */
+.dt { width:100%; border-collapse:collapse }
+
+/* ↑ th sticky for long tables */
+.dt th {
+  position:sticky; top:0; background:var(--s1);
+  font-family:var(--fm); font-size:9px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--mu); text-align:left; padding:10px 12px; border-bottom:1px solid var(--b2);
+  white-space:nowrap; z-index:1;
+}
+
+/* ↑ td font-size 12→13px */
+.dt td {
+  padding:10px 12px; font-size:13px; color:var(--tx2);
+  border-bottom:1px solid var(--b1); vertical-align:middle; line-height:1.4;
+}
+.dt tr:last-child td { border-bottom:none }
+
+/* ↑ hover bg rgba(.03→.06) */
+.dt tbody tr:hover td { background:rgba(255,77,0,.06) }
+
+.tag { display:inline-block; padding:2px 8px; font-family:var(--fm); font-size:9px; letter-spacing:.06em; border-radius:2px; white-space:nowrap }
+.ta { background:rgba(255,77,0,.14); color:#FF7A40 }
+.tm { background:rgba(255,200,0,.10); color:#FFD166 }
+.stars { color:var(--orange); font-size:11px; letter-spacing:1px }
+
+/* ↑ priority pill styling */
+.pa {
+  color:#FF4D00; font-weight:700;
+  background:rgba(255,77,0,.06); border-radius:3px; padding:3px 8px; display:inline-block;
+}
+.pm {
+  color:#FFD166; font-weight:600;
+  background:rgba(255,208,0,.05); border-radius:3px; padding:3px 8px; display:inline-block;
+}
+
+/* ─── STAT BLOCKS ─── */
+.sr { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:24px }
+.sb {
+  background:var(--s2); border:1px solid var(--b1);
+  border-left:3px solid var(--orange);
+  border-bottom:1px solid var(--b1);   /* ↑ close the block visually */
+  padding:20px 24px; flex:1; min-width:160px;
+}
+.sv { font-family:var(--fd); font-size:34px; line-height:1; color:var(--tx) }
+/* ↑ unit .u 18→20px for harmony */
+.sv .u { font-size:20px; color:var(--orange) }
+.sl { font-family:var(--fm); font-size:9px; letter-spacing:.15em; text-transform:uppercase; color:var(--mu); margin-top:5px }
+
+/* ─── OPP CARDS ─── */
+.og { display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:14px; margin-top:20px }
+
+/* ↑ oc: bg→s1, box-shadow, transition */
+.oc {
+  background:var(--s1); border:1px solid var(--b2);
+  border-left:3px solid var(--orange);
+  padding:22px;
+  box-shadow:0 2px 12px rgba(0,0,0,.35);
+  transition:transform .2s, box-shadow .2s;
+}
+.oc:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(255,77,0,.12) }
+
+.oi { font-size:20px; margin-bottom:9px }
+
+/* ↑ ot font-size 13→14px */
+.ot { font-size:14px; font-weight:700; color:var(--orange2); margin-bottom:7px }
+
+/* ↑ od font-size 12→13px, color→#999 */
+.od { font-size:13px; color:#999; line-height:1.68 }
+
+/* ─── FOOTER ─── */
+footer {
+  background:var(--s1); border-top:1px solid var(--b1);
+  padding:44px 72px;
+  display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:32px;
+}
+.fb { font-family:var(--fd); font-size:34px; letter-spacing:.06em; color:var(--tx) }
+.fb span { color:var(--orange) }
+.fb-payoff { font-family:var(--fm); font-size:9px; letter-spacing:.22em; color:var(--mu2); text-transform:uppercase; margin-top:4px }
+
+/* ↑ footer center links */
+.footer-links { display:flex; flex-direction:column; align-items:center; gap:10px }
+.footer-links a {
+  font-family:var(--fm); font-size:10px; color:var(--mu);
+  text-transform:uppercase; letter-spacing:.18em; text-decoration:none; transition:color .2s;
+}
+.footer-links a:hover { color:var(--orange) }
+
+.fm2 { font-family:var(--fm); font-size:10px; letter-spacing:.12em; color:var(--mu); text-align:right; line-height:1.85 }
+.fm2 .email { user-select:all }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fu { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
+.rev { opacity:0; transform:translateY(16px); transition:opacity .55s ease, transform .55s ease }
+.rev.on { opacity:1; transform:none }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1024px) {
+  .hero,.wrap,footer { padding-left:28px; padding-right:28px }
+  nav { padding-left:28px }
+  .c3,.c4,.c5,.c6,.c7,.c8 { grid-column:span 12 }
+  .sn { display:none }
+  .sh { grid-template-columns:1fr }
+  .kpis { gap:0 }
+  .kpi { padding:18px 20px 18px 0; margin-right:20px }
+  footer { grid-template-columns:1fr; text-align:left }
+  .fm2 { text-align:left }
+  .footer-links { align-items:flex-start }
+}
+@media(max-width:560px) {
+  .hero h1 { font-size:64px }
+  nav a { padding:13px 9px; font-size:8px }
+  .sb { min-width:130px }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <p class="eyebrow">Dacuna Studio — Creative Independent Agency · Brescia · Marzo 2026</p>
+  <h1>ANALISI<br>DI <span class="ac">MERCATO</span><br><span class="ol">2025–26</span></h1>
+  <p>Servizi di punta nelle agenzie di comunicazione, marketing digitale e design — Italia &amp; Lombardia.<br>8 categorie, dati di mercato, target, budget e opportunità per il contesto bresciano-lombardo.</p>
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kv">€5,5<span class="u">mld</span></div>
+      <!-- ↑ icon: bar chart for adv spend -->
+      <div class="kl">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#FF4D00" stroke-width="1.5" stroke-linecap="round"><rect x="1" y="8" width="2.5" height="5"/><rect x="5.5" y="5" width="2.5" height="8"/><rect x="10" y="2" width="2.5" height="11"/></svg>
+        Digital Adv Italia 2024
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kv">+12,5<span class="u">%</span></div>
+      <!-- ↑ icon: arrow up for growth -->
+      <div class="kl">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#FF4D00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,11 7,3 12,11"/><polyline points="5,3 7,3 7,6"/></svg>
+        Crescita annua digitale
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kv">€58,8<span class="u">mld</span></div>
+      <!-- ↑ icon: shopping cart for e-commerce -->
+      <div class="kl">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#FF4D00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1h2l1.5 7h6l1.5-5H4"/><circle cx="5.5" cy="12" r="1"/><circle cx="10" cy="12" r="1"/></svg>
+        E-Commerce B2C 2024
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kv">54<span class="u">%</span></div>
+      <!-- ↑ icon: percentage for PMI -->
+      <div class="kl">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#FF4D00" stroke-width="1.5" stroke-linecap="round"><circle cx="3.5" cy="3.5" r="1.5"/><circle cx="10.5" cy="10.5" r="1.5"/><line x1="2" y1="12" x2="12" y2="2"/></svg>
+        PMI italiane nel digitale
+      </div>
+    </div>
+    <div class="kpi">
+      <div class="kv">40k<span class="u">+</span></div>
+      <!-- ↑ icon: building for agencies -->
+      <div class="kl">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#FF4D00" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="10" height="9"/><path d="M5 13V9h4v4"/><path d="M2 4l5-3 5 3"/></svg>
+        Agenzie attive in Italia
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NAV ════════════════════════════════════════════════════════ -->
+<nav id="main-nav">
+  <div class="nb">DACUNA <span>STUDIO</span></div>
+  <a href="#s0" data-section="s0">Overview</a>
+  <a href="#s1" data-section="s1">Web</a>
+  <a href="#s2" data-section="s2">SEO &amp; SEM</a>
+  <a href="#s3" data-section="s3">Social</a>
+  <a href="#s4" data-section="s4">Brand</a>
+  <a href="#s5" data-section="s5">Content</a>
+  <a href="#s6" data-section="s6">E-Commerce</a>
+  <a href="#s7" data-section="s7">Paid</a>
+  <a href="#s8" data-section="s8">Print</a>
+  <a href="#s9" data-section="s9">Sintesi</a>
+</nav>
+
+<!-- ══ 00 — OVERVIEW ═════════════════════════════════════════════ -->
+<section id="s0"><div class="wrap">
+  <div class="sh rev">
+    <div class="sn">00</div>
+    <div>
+      <span class="badge">Panoramica</span>
+      <h2 class="st">IL MERCATO<br>IN NUMERI</h2>
+      <p class="sd">Distribuzione degli investimenti digitali in Italia 2024 e livello di domanda per categoria di servizio nelle agenzie di comunicazione.</p>
+    </div>
+  </div>
+  <div class="g">
+    <div class="card c6 rev">
+      <div class="cl">IAB Italia / Osservatorio Internet Media POLIMI 2024</div>
+      <div class="ct">Digital Advertising Italia 2024 — quota per formato (€5,5 miliardi)</div>
+      <div class="cb h300"><canvas id="a0" role="img" aria-label="Grafico a ciambella: distribuzione degli investimenti in digital advertising in Italia 2024 per formato"></canvas></div>
+    </div>
+    <div class="card c6 rev">
+      <div class="cl">IAB Italia — AdEx Benchmark 2020–2025E</div>
+      <div class="ct">Trend investimenti digitali Italia 2020–2025 (miliardi €)</div>
+      <div class="cb h300"><canvas id="a1" role="img" aria-label="Grafico lineare: crescita investimenti digital advertising in Italia dal 2020 al 2025"></canvas></div>
+    </div>
+    <div class="card c12 rev">
+      <div class="cl">Analisi Dacuna Studio su fonti di settore 2025</div>
+      <div class="ct">Domanda di mercato vs Marginalità per categoria di servizio (scala 1–5)</div>
+      <div class="cb h240"><canvas id="a2" role="img" aria-label="Grafico a barre: confronto domanda di mercato e marginalità per 8 categorie di servizio"></canvas></div>
+    </div>
+  </div>
+</div></section>
+<div class="div"></div>
+
+<!-- ══ 01 — WEB ══════════════════════════════════════════════════ -->
+<section id="s1"><div class="wrap">
+  <div class="sh rev">
+    <div class="sn">01</div>
+    <div>
+      <span class="badge">Categoria 1</span>
+      <h2 class="st">WEB DESIGN<br>&amp; DEVELOPMENT</h2>
+      <p class="sd">Servizio di ingresso principale. Trainato dal rinnovo del parco siti pre-2020, adozione mobile-first e requisiti GDPR/accessibilità WCAG.</p>
+    </div>
+  </div>
+  <div class="g">
+    <div class="card c5 rev">
+      <div class="cl">Range tariffari indicativi mercato italiano 2026</div>
+      <div class="ct">Budget progetto Web per tipologia cliente (min/max €)</div>
+      <div class="cb h340"><canvas id="b0" role="img" aria-label="Grafico a barre: range di budget per progetto web design per tipologia di cliente"></canvas></div>
+    </div>
+    <div class="card c7 rev">
+      <div class="cl">Stima distribuzione richieste — agenzie lombarde</div>
+      <div class="ct">Distribuzione clienti Web per settore (%)</div>
+      <div class="cb h340"><canvas id="b1" role="img" aria-label="Grafico a ciambella: distribuzione percentuale dei clienti web per settore merceologico"></canvas></div>
+    </div>
+    <div class="card c12 rev">
+      <div class="cl">Domanda servizi Web Design &amp; Development</div>
+      <div class="ct">Servizi più richiesti, budget tipici e trend 2025–26</div>
+      <table class="dt">
+        <thead><tr><th>Servizio</th><th>Domanda</th><th>Budget tipico</th><th>Trend</th></tr></thead>
+        <tbody>
+          <tr><td>Sito web istituzionale (CMS / WordPress)</td><td><span class="stars">★★★★★</span></td><td>€2.500 – €8.000</td><td><span class="tag ta">↑ Rinnovo parco siti</span></td></tr>
+          <tr><td>Restyling / aggiornamento sito esistente</td><td><span class="stars">★★★★★</span></td><td>€1.500 – €5.000</td><td><span class="tag ta">↑ Crescente</span></td></tr>
+          <tr><td>Landing page per campagne</td><td><span class="stars">★★★★</span></td><td>€800 – €3.000</td><td><span class="tag ta">↑ Con paid media</span></td></tr>
+          <tr><td>Sito B2B con area riservata / dealer portal</td><td><span class="stars">★★★</span></td><td>€6.000 – €20.000</td><td><span class="tag ta">↑ Manifatturiero</span></td></tr>
+          <tr><td>Web app / portali personalizzati</td><td><span class="stars">★★★</span></td><td>€10.000 – €40.000+</td><td><span class="tag tm">→ Stabile</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div></section>
+<div class="div"></div>
+
+<!-- ══ 02 — SEO ══════════════════════════════════════════════════ -->
+<section id="s2"><div class="wrap">
+  <div class="sh rev">
+    <div class="sn">02</div>
+    <div>
+      <span class="badge">Categoria 2</span>
+      <h2 class="st">SEO &amp; SEM</h2>
+      <p class="sd">ROI percepito più elevato tra tutti i servizi digitali. ROI medio stimato: 5× l'investimento in 12 mesi per PMI lombarde.</p>
+    </div>
+  </div>
+  <div class="g">
+    <div class="card c6 rev">
+      <div class="cl">Dati mercato Italia 2025 — elaborazione Dacuna Studio</div>
+      <div class="ct">Budget SEO/SEM annuo per tipologia di cliente (min/max €)</div>
+      <div class="cb h320"><canvas id="c0" role="img" aria-label="Grafico a barre: budget annuo SEO e SEM per tipologia di cliente"></canvas></div>
+    </div>
+    <div class="card c6 rev">
+      <div class="cl">Fonte: Pietro Rogondino — prezzi SEO Italia 2025</div>
+      <div class="ct">Tariffe orarie consulenza SEO per profilo professionale (€/ora)</div>
+      <div class="cb h320"><canvas id="c1" role="img" aria-label="Grafico a barre: tariffe orarie consulenza SEO per livello professionale in Italia"></canvas></div>
+    </div>
+  </div>
+</div></section>
+<div class="div"></div>
+
+<!-- ══ 03 — SOCIAL ═══════════════════════════════════════════════ -->
+<section id="s3"><div class="wrap">
+  <div class="sh rev">
+    <div class="sn">03</div>
+    <div>
+      <span class="badge">Categoria 3</span>
+      <h2 class="st">SOCIAL MEDIA<br>MARKETING</h2>
+      <p class="sd">Tasso di rinnovo contrattuale 75%+. Genera ricavi ricorrenti stabili — la categoria con la maggiore frequenza di acquisto.</p>
+    </div>
+  </div>
+  <div class="g">
+    <div class="card c5 rev">
+      <div class="cl">Fonte: Servizi Multimediali / We Are Social 2025 — Italia</div>
+      <div class="ct">Utenti attivi per piattaforma social in Italia (milioni)</div>
+      <div class="cb h360"><canvas id="d0" role="img" aria-label="Grafico a barre orizzontale: utenti attivi per piattaforma social in Italia in milioni"></canvas></div>
+    </div>
+    <div class="card c7 rev">
+      <div class="cl">Range tariffario gestione social — mercato italiano 2026</div>
+      <div class="ct">Budget mensile Social Media Management per segmento cliente (€/mese)</div>
+      <div class="cb h360"><canvas id="d1" role="img" aria-label="Grafico a barre: budget mensile social media management per segmento cliente"></canvas></div>
+    </div>
+  </div>
+</div></section>
+<div class="div"></div>
+
+<!-- ══ 04 — BRAND ════════════════════════════════════════════════ -->
+<section id="s4"><div class="wrap">
+  <div class="sh rev">
+    <div class="sn">04</div>
+    <div>
+      <span class="badge">Categoria 4</span>
+      <h2 class="st">BRAND IDENTITY<br>&amp; DESIGN</h2>
+      <p class="sd">Margini più elevati tra tutti i servizi. Costi variabili contenuti e tariffe premium. Domanda concentrata su fondazione, rebranding, internazionalizzazione.</p>
+    </div>
+  </div>
+  <div class="g">
+    <div class="card c5 rev">
+      <div class="cl">Analisi trigger d'acquisto — agenzie italiane</div>
+      <div class="ct">Principali motivazioni d'acquisto Brand Identity (%)</div>
+      <div class="cb h320"><canvas id="e0" role="img" aria-label="Grafico a ciambella: principali motivazioni di acquisto servizi di brand identity"></canvas></div>
+    </div>
+    <div class="card c7 rev">
+      <div class="cl">Benchmark tariffario mercato italiano 2025–26</div>
+      <div class="ct">Range investimento per tipologia di servizio Brand (min/max €)</div>
+      <div class="cb h320"><canvas id="e1" role="img" aria-label="Grafico a barre: range di investimento per tipologia di servizio brand identity"></canvas></div>
+    </div>
+  </div>
+</div></section>
+<div class="div"></div>
+
+<!-- ══ 05 — CONTENT ══════════════════════════════════════════════ -->
+<section id="s5"><div class="wrap">
+  <div class="sh rev">
+    <div class="sn">05</div>
+    <div>
+      <span class="badge">Categoria 5</span>
+      <h2 class="st">CONTENT CREATION<br>&amp; MARKETING</h2>
+      <p class="sd">Il Video supera €2,4 miliardi (+13%) nel 2025, raggiungendo il 41% dell'Internet advertising italiano. Il deficit di contenuti B2B nel territorio è la principale opportunità.</p>
+    </div>
+  </div>
+  <div class="g">
+    <!-- ↑ h260→h300 for single full-width chart sections -->
+    <div class="card c12 rev">
+      <div class="cl">Fonte: Osservatorio Internet Media POLIMI 2025 — elaborazione Dacuna Studio</div>
+      <div class="ct">Budget annuo contenuti per segmento cliente (min/max €/anno)</div>
+      <div class="cb h300"><canvas id="f0" role="img" aria-label="Grafico a barre: budget annuo per content marketing per segmento cliente"></canvas></div>
+    </div>
+  </div>
+</div></section>
+<div class="div"></div>
+
+<!-- ══ 06 — ECOMMERCE ════════════════════════════════════════════ -->
+<section id="s6"><div class="wrap">
+  <div class="sh rev">
+    <div class="sn">06</div>
+    <div>
+      <span class="badge">Categoria 6</span>
+      <h2 class="st">E-COMMERCE</h2>
+      <p class="sd">La Lombardia è prima regione italiana per densità di aziende e-commerce: 18,6% del totale nazionale. Mercato da €58,8 miliardi nel 2024.</p>
+    </div>
+  </div>
+  <div class="sr rev">
+    <div class="sb"><div class="sv">€58,8<span class="u">mld</span></div><div class="sl">E-Commerce B2C Italia 2024</div></div>
+    <div class="sb"><div class="sv">+6<span class="u">%</span></div><div class="sl">Crescita 2024 vs 2023</div></div>
+    <div class="sb"><div class="sv">88.000<span class="u">+</span></div><div class="sl">Aziende con canale digitale</div></div>
+    <div class="sb"><div class="sv">18,6<span class="u">%</span></div><div class="sl">Quota lombarda sul totale</div></div>
+  </div>
+  <div class="g">
+    <div class="card c5 rev">
+      <div class="cl">Osservatorio eCommerce B2C Netcomm–POLIMI 2024</div>
+      <div class="ct">Crescita E-Commerce B2C Italia 2020–2024 (miliardi €)</div>
+      <div class="cb h300"><canvas id="g0" role="img" aria-label="Grafico lineare: crescita del mercato e-commerce B2C in Italia dal 2020 al 2024"></canvas></div>
+    </div>
+    <div class="card c4 rev">
+      <div class="cl">% aziende e-commerce per regione — top 5</div>
+      <div class="ct">Concentrazione geografica e-commerce italiano</div>
+      <div class="cb h300"><canvas id="g1" role="img" aria-label="Grafico a barre: percentuale di aziende e-commerce per regione italiana, top 5"></canvas></div>
+    </div>
+    <div class="card c3 rev">
+      <div class="cl">Fonte: Netcomm Report 2024</div>
+      <div class="ct">Crescita per comparto merceologico (% 2024)</div>
+      <div class="cb h300"><canvas id="g2" role="img" aria-label="Grafico a barre orizzontale: crescita percentuale e-commerce per comparto merceologico nel 2024"></canvas></div>
+    </div>
+  </div>
+</div></section>
+<div class="div"></div>
+
+<!-- ══ 07 — PAID ═════════════════════════════════════════════════ -->
+<section id="s7"><div class="wrap">
+  <div class="sh rev">
+    <div class="sn">07</div>
+    <div>
+      <span class="badge">Categoria 7</span>
+      <h2 class="st">CAMPAGNE PAID<br>SEA &amp; SOCIAL ADS</h2>
+      <p class="sd">Internet vale il 49% degli investimenti pubblicitari italiani totali. Stima 2025: oltre €6 miliardi (+9% vs 2024).</p>
+    </div>
+  </div>
+  <div class="g">
+    <div class="card c5 rev">
+      <div class="cl">IAB Italia AdReport — AdEx Benchmark Europe 2024</div>
+      <div class="ct">Quota di mercato per formato advertising digitale (%)</div>
+      <div class="cb h320"><canvas id="h0" role="img" aria-label="Grafico a ciambella: quota di mercato per formato di advertising digitale in Italia 2024"></canvas></div>
+    </div>
+    <div class="card c7 rev">
+      <div class="cl">Range fee agenzia + budget pubblicitario — mercato 2026</div>
+      <div class="ct">Investimento mensile campagne Paid per tipologia cliente (€/mese)</div>
+      <div class="cb h320"><canvas id="h1" role="img" aria-label="Grafico a barre: investimento mensile in campagne paid per tipologia di cliente"></canvas></div>
+    </div>
+  </div>
+</div></section>
+<div class="div"></div>
+
+<!-- ══ 08 — PRINT ════════════════════════════════════════════════ -->
+<section id="s8"><div class="wrap">
+  <div class="sh rev">
+    <div class="sn">08</div>
+    <div>
+      <span class="badge">Categoria 8</span>
+      <h2 class="st">EXHIBITION &amp;<br>PRINT DESIGN</h2>
+      <p class="sd">La print B2B mantiene un ruolo strategico nel manifatturiero lombardo. MECSPE, HOST, Vinitaly, Fieracavalli sono tutti nel raggio d'azione di Dacuna Studio.</p>
+    </div>
+  </div>
+  <div class="g">
+    <!-- ↑ h260→h300 for single full-width chart sections -->
+    <div class="card c12 rev">
+      <div class="cl">Budget annuo Print &amp; Exhibition per tipologia cliente — mercato italiano 2025</div>
+      <div class="ct">Investimento per segmento (min/max €/anno)</div>
+      <div class="cb h300"><canvas id="i0" role="img" aria-label="Grafico a barre: budget annuo per print ed exhibition per tipologia di cliente"></canvas></div>
+    </div>
+  </div>
+</div></section>
+<div class="div"></div>
+
+<!-- ══ 09 — SINTESI ══════════════════════════════════════════════ -->
+<section id="s9"><div class="wrap">
+  <div class="sh rev">
+    <div class="sn">09</div>
+    <div>
+      <span class="badge">Matrice Strategica</span>
+      <h2 class="st">PRIORITÀ<br>DACUNA STUDIO</h2>
+      <p class="sd">Ogni categoria valutata su domanda di mercato, marginalità potenziale e competitività locale nel contesto bresciano-lombardo.</p>
+    </div>
+  </div>
+  <div class="g">
+    <div class="card c7 rev">
+      <div class="cl">Dimensione bolla = opportunità locale stimata per Dacuna Studio</div>
+      <div class="ct">Domanda di mercato × Marginalità per categoria di servizio</div>
+      <div class="cb h400"><canvas id="j0" role="img" aria-label="Grafico a bolle: posizionamento delle categorie di servizio per domanda di mercato e marginalità"></canvas></div>
+    </div>
+    <div class="card c5 rev">
+      <div class="cl">Valore medio annuo indicativo per bundle commerciale (€)</div>
+      <div class="ct">Bundle di servizi — valore stimato annuo</div>
+      <div class="cb h400"><canvas id="j1" role="img" aria-label="Grafico a barre orizzontale: valore annuo stimato per bundle di servizi Dacuna Studio"></canvas></div>
+    </div>
+    <div class="card c12 rev">
+      <div class="cl">Riepilogo strategico — analisi Dacuna Studio Marzo 2026</div>
+      <div class="ct">Matrice servizi: domanda, marginalità, competitività e priorità</div>
+      <table class="dt">
+        <thead><tr><th>Categoria</th><th>Domanda</th><th>Marginalità</th><th>Competitività locale</th><th>Priorità Dacuna</th></tr></thead>
+        <tbody>
+          <tr><td>Web Design &amp; Development</td><td><span class="stars">★★★★★</span></td><td><span class="stars">★★★</span></td><td>Alta</td><td><span class="pa">🔴 Alta (core)</span></td></tr>
+          <tr><td>SEO &amp; SEM</td><td><span class="stars">★★★★★</span></td><td><span class="stars">★★★★</span></td><td>Media</td><td><span class="pa">🔴 Alta</span></td></tr>
+          <tr><td>Social Media Marketing</td><td><span class="stars">★★★★★</span></td><td><span class="stars">★★★</span></td><td>Alta</td><td><span class="pm">🟡 Media–Alta</span></td></tr>
+          <tr><td>Brand Identity &amp; Design</td><td><span class="stars">★★★★</span></td><td><span class="stars">★★★★★</span></td><td>Bassa–Media</td><td><span class="pa">🔴 Alta (premium)</span></td></tr>
+          <tr><td>Content Creation &amp; Marketing</td><td><span class="stars">★★★★</span></td><td><span class="stars">★★★★</span></td><td>Bassa</td><td><span class="pa">🔴 Alta (nicchia B2B)</span></td></tr>
+          <tr><td>E-Commerce</td><td><span class="stars">★★★★★</span></td><td><span class="stars">★★★★</span></td><td>Media</td><td><span class="pm">🟡 Media–Alta</span></td></tr>
+          <tr><td>Campagne Paid (SEA / Social Ads)</td><td><span class="stars">★★★★★</span></td><td><span class="stars">★★★</span></td><td>Alta</td><td><span class="pm">🟡 Media</span></td></tr>
+          <tr><td>Exhibition &amp; Print Design</td><td><span class="stars">★★★★</span></td><td><span class="stars">★★★★</span></td><td>Bassa</td><td><span class="pa">🔴 Alta (differenziante)</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div style="margin-top:60px" class="rev">
+    <span class="badge" style="display:inline-block;margin-bottom:20px">🎯 Opportunità di posizionamento — Brescia &amp; Lombardia 2026</span>
+    <div class="og">
+      <div class="oc"><div class="oi">🏭</div><div class="ot">SEO verticale manifatturiero B2B</div><div class="od">Mercato sottoservito a Brescia-Bergamo. Le PMI industriali cercano agenzie specializzate in meccanica, automotive e food processing — non web agency generaliste.</div></div>
+      <div class="oc"><div class="oi">🍷</div><div class="ot">Brand identity + packaging food &amp; wine</div><div class="od">Franciacorta, DOP bresciani e bergamaschi (Grana, Bresaola, Salumi), produttori vino. Nicchia ad alta marginalità, forte coerenza con la vocazione territoriale di Dacuna Studio.</div></div>
+      <div class="oc"><div class="oi">🔗</div><div class="ot">E-commerce B2B — portale dealer</div><div class="od">PMI manifatturiere con processi d'ordine ancora via email o telefono. Portale rivenditore con listini personalizzati + integrazione ERP: alto valore, scarsa competizione locale.</div></div>
+      <div class="oc"><div class="oi">💼</div><div class="ot">LinkedIn Advertising specializzato B2B</div><div class="od">Le PMI industriali lombarde vogliono comunicare su LinkedIn ma raramente trovano agenzie locali con vera competenza sul canale. Alta marginalità, bassa concorrenza nel territorio.</div></div>
+      <div class="oc"><div class="oi">🎪</div><div class="ot">Pacchetto fiera completo</div><div class="od">Print + stand concept + social coverage evento + follow-up DEM. Stagionalità prevedibile. MECSPE, HOST Milano, Vinitaly, Fieracavalli: tutti nel raggio d'azione di Dacuna Studio.</div></div>
+      <div class="oc"><div class="oi">🎬</div><div class="ot">Video breve B2B per LinkedIn &amp; YouTube</div><div class="od">Case study, processo produttivo, testimonial clienti in formato Reels adattato per LinkedIn. Ancora pochissimo presidiato dalle agenzie del territorio bresciano.</div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════════ -->
+<footer>
+  <div>
+    <div class="fb">DACUNA <span>STUDIO</span></div>
+    <p class="fb-payoff">Creative Independent Agency</p>
+  </div>
+  <!-- ↑ center anchor links -->
+  <nav class="footer-links" aria-label="Navigazione rapida">
+    <a href="#s0">Overview</a>
+    <a href="#s4">Brand Identity</a>
+    <a href="#s6">E-Commerce</a>
+    <a href="#s9">Sintesi Strategica</a>
+  </nav>
+  <div class="fm2">
+    <span class="email">info@dacunastudio.com</span><br>
+    dacunastudio.com<br>
+    Brescia · Bergamo · Verona · Franciacorta<br>
+    Analisi di Mercato 2025–2026 — Marzo 2026
+  </div>
+</footer>
+
+<!-- ══ SCRIPTS ═══════════════════════════════════════════════════ -->
+<script>
+/* ─── Chart.js Global Defaults ──────────────────────────────── */
+Chart.defaults.color = '#666';
+Chart.defaults.font.family = 'Plus Jakarta Sans';
+Chart.defaults.font.size = 11;
+Chart.defaults.plugins.legend.labels.boxWidth = 10;
+Chart.defaults.plugins.legend.labels.padding = 14;
+Chart.defaults.plugins.legend.labels.color = '#777';
+Chart.defaults.plugins.tooltip.backgroundColor = '#1F1F1F';
+Chart.defaults.plugins.tooltip.borderColor = '#333';
+Chart.defaults.plugins.tooltip.borderWidth = 1;
+Chart.defaults.plugins.tooltip.titleColor = '#F0F0F0';
+Chart.defaults.plugins.tooltip.bodyColor = '#AAA';
+Chart.defaults.plugins.tooltip.padding = 11;
+
+const O        = '#FF4D00';
+const grid     = { color:'#1C1C1C', borderDash:[3,3] };
+const noGr     = { display:false };
+const tX       = { color:'#555' };
+const tXs      = { color:'#555', font:{ size:10 }, maxRotation:45, minRotation:45 };
+const sX       = { grid, ticks:tX };
+const sY       = { grid, ticks:tX };
+
+function rgba(h, a) {
+  const n = parseInt(h.slice(1), 16);
+  return `rgba(${n>>16},${(n>>8)&255},${n&255},${a})`;
+}
+
+const donutColors = ['#FF4D00','#FF6B2B','#FF8A55','#CC3700','#993000'];
+const barLight    = rgba(O, .38);
+const barMain     = O;
+
+/* ↑ helper for responsive donut legend position */
+function getDonutLegendPos() {
+  return window.innerWidth < 768 ? 'bottom' : 'right';
+}
+
+/* ─── 00a donut: adv formats ─────────────────────────────────── */
+new Chart(document.getElementById('a0'), {
+  type:'doughnut',
+  data:{ labels:['Search Ads','Social Media Ads','Video Ads','Display & Native','Classified & Other'], datasets:[{ data:[28,24,22,15,11], backgroundColor:donutColors, borderWidth:0, hoverOffset:6 }] },
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ position:getDonutLegendPos() }, tooltip:{ callbacks:{ label:c=>' '+c.label+': '+c.raw+'%' } } },
+    cutout:'60%' }
+});
+
+/* ─── 00b line: digital adv trend ───────────────────────────── */
+new Chart(document.getElementById('a1'), {
+  type:'line',
+  data:{ labels:['2020','2021','2022','2023','2024','2025E'], datasets:[{ label:'Digital Adv (mld €)', data:[3.1,3.6,4.2,4.9,5.5,6.0], borderColor:O, backgroundColor:rgba(O,.1), pointBackgroundColor:O, pointRadius:5, fill:true, tension:.4 }] },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:sX, y:{...sY, min:2.5, ticks:{...tX, callback:v=>'€'+v+'B'}} } }
+});
+
+/* ─── 00c grouped bar: domanda vs marginalità ─────────────────── */
+new Chart(document.getElementById('a2'), {
+  type:'bar',
+  data:{ labels:['Web Design','SEO & SEM','Social Media','Brand Identity','Content','E-Commerce','Paid Ads','Print & Exhibition'],
+    datasets:[
+      { label:'Domanda mercato', data:[5,5,5,4,4,5,5,4], backgroundColor:O, borderRadius:2 },
+      { label:'Marginalità',     data:[3,4,3,5,4,4,3,4], backgroundColor:rgba(O,.35), borderRadius:2 }
+    ]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ x:{...sX, ticks:tX}, y:{...sY, max:5.8, ticks:{...tX, stepSize:1}} } }
+});
+
+/* ─── 01a bar: web price ──────────────────────────────────────── */
+new Chart(document.getElementById('b0'), {
+  type:'bar',
+  data:{ labels:['Professionista','PMI locale','PMI B2B','Corporate','Web app'],
+    datasets:[
+      { label:'Min (€)', data:[1500,2500,6000,8000,10000], backgroundColor:barLight, borderRadius:3 },
+      { label:'Max (€)', data:[5000,8000,20000,30000,40000], backgroundColor:barMain, borderRadius:3 }
+    ]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ x:{ grid:noGr, ticks:tXs }, y:{...sY, ticks:{...tX, callback:v=>'€'+v.toLocaleString('it')}} } }
+});
+
+/* ─── 01b donut: web target ───────────────────────────────────── */
+new Chart(document.getElementById('b1'), {
+  type:'doughnut',
+  data:{ labels:['PMI manifatturiere','Turismo & Hospitality','Professionisti/Studi','Enti pubblici','Retail','Startup'], datasets:[{ data:[32,22,18,12,10,6], backgroundColor:['#FF4D00','#FF6B2B','#FF8A55','#CC3700','#993000','#662200'], borderWidth:0, hoverOffset:6 }] },
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ position:getDonutLegendPos() }, tooltip:{ callbacks:{ label:c=>' '+c.label+': '+c.raw+'%' } } },
+    cutout:'55%' }
+});
+
+/* ─── 02a bar: seo budget ─────────────────────────────────────── */
+new Chart(document.getElementById('c0'), {
+  type:'bar',
+  data:{ labels:['Professionisti','Retail locale','Turismo','PMI B2B','E-commerce','PMI export'],
+    datasets:[
+      { label:'Min (€/anno)', data:[3000,4000,6000,10000,12000,10000], backgroundColor:barLight, borderRadius:3 },
+      { label:'Max (€/anno)', data:[8000,12000,18000,30000,40000,30000], backgroundColor:barMain, borderRadius:3 }
+    ]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ x:{ grid:noGr, ticks:tXs }, y:{...sY, ticks:{...tX, callback:v=>'€'+v.toLocaleString('it')}} } }
+});
+
+/* ─── 02b bar: seo tariffe ────────────────────────────────────── */
+new Chart(document.getElementById('c1'), {
+  type:'bar',
+  data:{ labels:['Freelance junior','Freelance senior','Consulente top','Agenzia media','Agenzia premium'],
+    datasets:[
+      { label:'Min (€/ora)', data:[50,120,200,80,150], backgroundColor:barLight, borderRadius:3 },
+      { label:'Max (€/ora)', data:[100,200,350,200,300], backgroundColor:barMain, borderRadius:3 }
+    ]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ x:{ grid:noGr, ticks:tXs }, y:{...sY, ticks:{...tX, callback:v=>'€'+v+'/h'}} } }
+});
+
+/* ─── 03a bar: social platform ───────────────────────────────── */
+new Chart(document.getElementById('d0'), {
+  type:'bar',
+  data:{ labels:['YouTube','Facebook','Instagram','TikTok','LinkedIn','Pinterest','X/Twitter'], datasets:[{ label:'Utenti attivi (mln)', data:[44,36,27.8,20,17,11,8], backgroundColor:['#FF4D00','#E63E00','#CC3700','#FF6B2B','#FF8A55','#993000','#662200'], borderRadius:3 }] },
+  options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{...sX, ticks:{...tX, callback:v=>v+'M'}}, y:{ grid:noGr, ticks:{ color:'#888' } } } }
+});
+
+/* ─── 03b bar: social budget ─────────────────────────────────── */
+new Chart(document.getElementById('d1'), {
+  type:'bar',
+  data:{ labels:['Retail / Piccolo comm.','Istituzionale / Cultura','Turismo & Hospitality','Food & Wine Franciacorta','PMI B2B Manifattura'],
+    datasets:[
+      { label:'Min (€/mese)', data:[300,400,600,800,800], backgroundColor:barLight, borderRadius:3 },
+      { label:'Max (€/mese)', data:[800,1000,1500,2000,2000], backgroundColor:barMain, borderRadius:3 }
+    ]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ x:{ grid:noGr, ticks:tXs }, y:{...sY, ticks:{...tX, callback:v=>'€'+v+'/m'}} } }
+});
+
+/* ─── 04a donut: brand trigger ───────────────────────────────── */
+new Chart(document.getElementById('e0'), {
+  type:'doughnut',
+  data:{ labels:['Fondazione nuova impresa','Rebranding obsoleto','Internazionalizzazione','Lancio nuovo prodotto','Acquisizione / fusione','Certificazioni'], datasets:[{ data:[30,28,18,12,7,5], backgroundColor:['#FF4D00','#E63E00','#FF6B2B','#CC3700','#FF8A55','#993000'], borderWidth:0, hoverOffset:6 }] },
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ position:getDonutLegendPos() }, tooltip:{ callbacks:{ label:c=>' '+c.label+': '+c.raw+'%' } } },
+    cutout:'55%' }
+});
+
+/* ─── 04b bar: brand price ───────────────────────────────────── */
+new Chart(document.getElementById('e1'), {
+  type:'bar',
+  data:{ labels:['Logo base','Brand identity\ncompleta','Rebranding\naziendale','Packaging\ndesign','Brand\narchitecture'],
+    datasets:[
+      { label:'Min (€)', data:[1500,5000,8000,3000,10000], backgroundColor:barLight, borderRadius:3 },
+      { label:'Max (€)', data:[8000,25000,30000,15000,50000], backgroundColor:barMain, borderRadius:3 }
+    ]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ x:{ grid:noGr, ticks:tXs }, y:{...sY, ticks:{...tX, callback:v=>'€'+v.toLocaleString('it')}} } }
+});
+
+/* ─── 05 bar: content budget ─────────────────────────────────── */
+new Chart(document.getElementById('f0'), {
+  type:'bar',
+  data:{ labels:['Retail','Enti pubblici','Turismo','PMI B2B Manifattura','Food & Wine'],
+    datasets:[
+      { label:'Min (€/anno)', data:[3000,3000,4000,5000,5000], backgroundColor:barLight, borderRadius:3 },
+      { label:'Max (€/anno)', data:[8000,10000,15000,20000,25000], backgroundColor:barMain, borderRadius:3 }
+    ]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ x:{ grid:noGr, ticks:tXs }, y:{...sY, ticks:{...tX, callback:v=>'€'+v.toLocaleString('it')}} } }
+});
+
+/* ─── 06a line: ecom trend ───────────────────────────────────── */
+new Chart(document.getElementById('g0'), {
+  type:'line',
+  data:{ labels:['2020','2021','2022','2023','2024'], datasets:[{ label:'B2C eCommerce (mld €)', data:[32.4,39.4,48.1,55.5,58.8], borderColor:O, backgroundColor:rgba(O,.1), pointBackgroundColor:O, pointRadius:5, fill:true, tension:.4 }] },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:sX, y:{...sY, min:28, ticks:{...tX, callback:v=>'€'+v+'B'}} } }
+});
+
+/* ─── 06b bar: ecom geo ──────────────────────────────────────── */
+new Chart(document.getElementById('g1'), {
+  type:'bar',
+  data:{ labels:['Lombardia','Lazio','Campania','Veneto','Emilia-R.'], datasets:[{ label:'%', data:[18.6,12.1,12.0,9.8,8.4], backgroundColor:['#FF4D00','#CC3700','#993000','#662200','#441800'], borderRadius:3 }] },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:noGr, ticks:tXs }, y:{...sY, ticks:{...tX, callback:v=>v+'%'}} } }
+});
+
+/* ─── 06c bar: ecom sector ───────────────────────────────────── */
+new Chart(document.getElementById('g2'), {
+  type:'bar',
+  data:{ labels:['Arred. & Home','Beauty & Pharma','Sport & Hobby','Food & Grocery','Turismo','Abbigliamento','Elettronica'], datasets:[{ label:'%', data:[12,12,9,7,6,5,3], backgroundColor:['#FF4D00','#FF6B2B','#FF8A55','#E63E00','#CC3700','#993000','#662200'], borderRadius:3 }] },
+  options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{...sX, ticks:{...tX, callback:v=>'+'+v+'%'}}, y:{ grid:noGr, ticks:{ color:'#888', font:{ size:10 } } } } }
+});
+
+/* ─── 07a donut: paid format ─────────────────────────────────── */
+new Chart(document.getElementById('h0'), {
+  type:'doughnut',
+  data:{ labels:['Search Ads (Google)','Social Ads (Meta/LI/TikTok)','Video Ads (YT/CTV)','Display & Native','Classified & Other'], datasets:[{ data:[28,24,22,15,11], backgroundColor:donutColors, borderWidth:0, hoverOffset:6 }] },
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ position:getDonutLegendPos() }, tooltip:{ callbacks:{ label:c=>' '+c.label+': '+c.raw+'%' } } },
+    cutout:'60%' }
+});
+
+/* ─── 07b bar: paid budget ───────────────────────────────────── */
+new Chart(document.getElementById('h1'), {
+  type:'bar',
+  data:{ labels:['Enti / Associazioni','Food & Wine','Turismo','PMI B2B','E-commerce / Retail'],
+    datasets:[
+      { label:'Min (€/mese)', data:[200,300,500,500,1000], backgroundColor:barLight, borderRadius:3 },
+      { label:'Max (€/mese)', data:[1000,1500,2000,3000,10000], backgroundColor:barMain, borderRadius:3 }
+    ]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ x:{ grid:noGr, ticks:tXs }, y:{...sY, ticks:{...tX, callback:v=>'€'+v.toLocaleString('it')}} } }
+});
+
+/* ─── 08 bar: print budget ───────────────────────────────────── */
+new Chart(document.getElementById('i0'), {
+  type:'bar',
+  data:{ labels:['Professionisti / Studi','Istituzionale','Turismo & Hospitality','PMI B2B Manifattura','Industria / Fiere internaz.'],
+    datasets:[
+      { label:'Min (€/anno)', data:[1000,3000,2000,5000,5000], backgroundColor:barLight, borderRadius:3 },
+      { label:'Max (€/anno)', data:[4000,15000,8000,30000,30000], backgroundColor:barMain, borderRadius:3 }
+    ]
+  },
+  options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'top' } }, scales:{ x:{ grid:noGr, ticks:tXs }, y:{...sY, ticks:{...tX, callback:v=>'€'+v.toLocaleString('it')}} } }
+});
+
+/* ─── 09a bubble: matrix ─────────────────────────────────────── */
+new Chart(document.getElementById('j0'), {
+  type:'bubble',
+  data:{ datasets:[
+    { label:'Web Design & Dev',   data:[{x:5,y:3,r:16}], backgroundColor:rgba('#FF4D00',.82) },
+    { label:'SEO & SEM',          data:[{x:5,y:4,r:18}], backgroundColor:rgba('#FF6B2B',.82) },
+    { label:'Social Media Mktg',  data:[{x:5,y:3,r:14}], backgroundColor:rgba('#E63E00',.82) },
+    { label:'Brand Identity',     data:[{x:4,y:5,r:21}], backgroundColor:rgba('#CC3700',.85) },
+    { label:'Content Creation',   data:[{x:4,y:4,r:14}], backgroundColor:rgba('#FF8A55',.82) },
+    { label:'E-Commerce',         data:[{x:5,y:4,r:18}], backgroundColor:rgba('#993000',.85) },
+    { label:'Campagne Paid',      data:[{x:5,y:3,r:12}], backgroundColor:rgba('#FF4D00',.45) },
+    { label:'Print & Exhibition', data:[{x:4,y:4,r:14}], backgroundColor:rgba('#662200',.9)  },
+  ]},
+  options:{ responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{ position:'bottom', labels:{ font:{ size:10 }, boxWidth:10, padding:10 } } },
+    scales:{
+      x:{...sX, title:{ display:true, text:'Domanda di mercato →', color:'#555', font:{ size:10 } }, min:3, max:5.8 },
+      y:{...sY, title:{ display:true, text:'Marginalità →',        color:'#555', font:{ size:10 } }, min:2, max:5.8 }
+    }
+  }
+});
+
+/* ─── 09b bar: bundle value ──────────────────────────────────── */
+new Chart(document.getElementById('j1'), {
+  type:'bar',
+  data:{ labels:['Starter Digital','Digital B2B','Brand & Digital','Fiera Full Pack','Food & Wine Pack','Ecom Growth'],
+    datasets:[{ label:'Valore medio annuo (€)', data:[13000,35000,25000,20000,27500,21000], backgroundColor:['#FF4D00','#E63E00','#CC3700','#FF6B2B','#FF8A55','#993000'], borderRadius:3 }]
+  },
+  options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{...sX, ticks:{...tX, callback:v=>'€'+v.toLocaleString('it')}}, y:{ grid:noGr, ticks:{ color:'#888', font:{ size:10 } } } } }
+});
+
+/* ─── Scroll reveal ──────────────────────────────────────────── */
+const ob = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('on'), i * 75);
+      ob.unobserve(e.target);
+    }
+  });
+}, { threshold:.08 });
+document.querySelectorAll('.rev').forEach(el => ob.observe(el));
+
+/* ─── Active nav link via IntersectionObserver ───────────────── */
+const navLinks = document.querySelectorAll('nav[id="main-nav"] a[data-section]');
+const sections = document.querySelectorAll('section[id]');
+
+const navOb = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.dataset.section === id);
+      });
+    }
+  });
+}, { threshold:.25, rootMargin:'-60px 0px -40% 0px' });
+
+sections.forEach(s => navOb.observe(s));
+</script>
+</body>
+</html>
